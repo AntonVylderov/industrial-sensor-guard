@@ -15,10 +15,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: dtolnay/rust-toolchain@stable
-        with:
-          toolchain: 1.94
-          components: rustfmt, clippy
+      - name: Install Rust toolchain with components
+        run: |
+          rustup toolchain install 1.94 --profile minimal --component rustfmt clippy
+          rustup default 1.94
       - name: Check formatting
         run: cargo fmt -- --check
       - name: Lint with Clippy
