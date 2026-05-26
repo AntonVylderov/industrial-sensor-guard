@@ -12,6 +12,14 @@ anyhow = "1.0"
 tracing = "0.1"
 tracing-subscriber = { version = "0.3", features = ["env-filter", "json"] }
 chrono = { version = "0.4", features = ["serde"] }
-rand = "0.10.1"
+rand = "0.10"
+
+# Метрики
 metrics = "0.24"
-metrics-exporter-prometheus = "0.18.3"
+metrics-exporter-prometheus = "0.18.3"   # последняя стабильная
+
+# Ручной HTTP-сервер для метрик
+hyper = { version = "1", features = ["http1", "server"] }
+hyper-util = { version = "0.1", features = ["tokio"] }
+http-body-util = "0.1"
+bytes = "1.0"
