@@ -1,3 +1,4 @@
+use metrics::counter;
 use tokio::sync::mpsc;
 use tracing::{info, warn};
 
@@ -5,7 +6,6 @@ use crate::models::SensorData;
 
 const ANOMALY_THRESHOLD: f64 = 85.0;
 
-/// Чистая функция, определяющая аномалию – легко тестируется.
 fn is_anomaly(value: f64) -> bool {
     value > ANOMALY_THRESHOLD
 }
@@ -18,7 +18,11 @@ pub async fn run(mut rx: mpsc::Receiver<SensorData>) -> anyhow::Result<()> {
             "Received sensor data"
         );
 
+        let sensor_id = data.sensor_id.clone();
+        counter!("sensor_readings_total", "sensor_id" => sensor_id.clone()).increment(1);
+
         if is_anomaly(data.value) {
+            counter!("sensor_anomalies_total", "sensor_id" => sensor_id).increment(1);
             warn!(
                 sensor_id = %data.sensor_id,
                 value = data.value,
@@ -42,7 +46,6 @@ mod tests {
     use super::*;
     use chrono::Utc;
 
-    // Модульные тесты чистой логики
     #[test]
     fn test_anomaly_detected() {
         assert!(is_anomaly(85.1));
@@ -58,7 +61,6 @@ mod tests {
         assert!(!is_anomaly(85.0));
     }
 
-    // Интеграционный асинхронный тест: processor получает данные и завершается
     #[tokio::test]
     async fn test_processor_receives_and_completes() {
         let (tx, rx) = mpsc::channel(16);
@@ -68,7 +70,7 @@ mod tests {
             timestamp: Utc::now(),
         };
         tx.send(test_data).await.expect("send");
-        drop(tx); // закрываем канал, processor завершит работу
+        drop(tx);
         let result = run(rx).await;
         assert!(result.is_ok());
     }

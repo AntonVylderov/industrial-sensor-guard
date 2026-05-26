@@ -8,10 +8,9 @@ use crate::error::ServiceError;
 use crate::models::SensorData;
 
 pub async fn run(tx: mpsc::Sender<SensorData>) -> anyhow::Result<()> {
-    // rand::rng() возвращает ThreadRng (Send + Sync), автоматически
-    // заполненный системной энтропией — безопасен для tokio::spawn.
+    // StdRng: Send + Sync, безопасен для tokio::spawn.
+    // Инициализация через rand::rng() (потокобезопасный источник энтропии).
     let mut rng = StdRng::from_rng(&mut rand::rng());
-
     let sensor_ids = ["temp-001", "press-002", "vibro-003"];
 
     loop {
