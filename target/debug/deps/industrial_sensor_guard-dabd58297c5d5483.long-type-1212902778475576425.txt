@@ -1,1 +1,0 @@
-hyper::server::conn::http1::Connection<TokioIo<tokio::net::TcpStream>, hyper::service::util::ServiceFn<{closure@src/main.rs:51:38: 51:49}, hyper::body::Incoming>>
