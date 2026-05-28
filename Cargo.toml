@@ -4,22 +4,50 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
+# Асинхронный рантайм
 tokio = { version = "1", features = ["full"] }
+
+# Сериализация/десериализация
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
+serde_yaml = "0.9"
+
+# Обработка ошибок
 thiserror = "2"
 anyhow = "1"
+
+# Логирование и трейсинг
 tracing = "0.1"
-tracing-subscriber = { version = "0.3", features = ["env-filter", "json"] }
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+tracing-appender = "0.2"
+
+# Время
 chrono = { version = "0.4", features = ["serde"] }
+
+# Генерация случайных чисел (симулятор)
 rand = "0.10"
 
-# Метрики
+# Метрики и Prometheus
 metrics = "0.24"
 metrics-exporter-prometheus = "0.18"
 
-# Ручной HTTP-сервер для метрик
-hyper = "1"
-hyper-util = "0.1"
+# HTTP сервер для метрик
+hyper = { version = "1.10.0", features = ["http1", "server"] }
+hyper-util = { version = "0.1", features = ["tokio"] }
 http-body-util = "0.1"
 bytes = "1"
+
+# Modbus TCP
+tokio-modbus = { version = "0.17", features = ["tcp"] }
+
+# TUI
+ratatui = "0.30.0"
+crossterm = "0.29.0"
+
+# Веб-дашборд (мнемосхема, WebSocket)
+axum = { version = "0.8", features = ["ws"] }
+include_dir = "0.7"
+futures-util = "0.3"
+
+# Если захотите сохранять данные в SQLite – раскомментируйте
+# sqlx = { version = "0.8", features = ["runtime-tokio-native-tls", "sqlite", "chrono"] }

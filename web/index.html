@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Industrial Sensor Guard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="scanline"></div>
+<div class="noise"></div>
+
+<header>
+    <div class="header-left">
+        <div class="logo">⬡ ISG</div>
+        <div class="header-info">
+            <div class="header-title">INDUSTRIAL SENSOR GUARD</div>
+            <div class="header-sub">REAL-TIME MONITORING SYSTEM v0.1.0</div>
+        </div>
+    </div>
+    <div class="header-right">
+        <div class="conn-indicator" id="connIndicator">
+            <span class="conn-dot" id="connDot"></span>
+            <span id="connLabel">OFFLINE</span>
+        </div>
+        <div class="clock" id="clock">--:--:--</div>
+    </div>
+</header>
+
+<main>
+    <!-- Gauges -->
+    <section class="gauges-row">
+        <div class="sensor-card" id="card_bearing_vibration_x">
+            <div class="card-label">ВИБРАЦИЯ ПОДШИПНИКА X</div>
+            <div class="card-unit-badge">mm/s</div>
+            <div class="gauge-wrap">
+                <div class="gauge-el" id="gauge_bearing_vibration_x"></div>
+                <div class="gauge-center">
+                    <div class="gauge-val" id="val_bearing_vibration_x">—</div>
+                    <div class="gauge-unit">mm/s</div>
+                </div>
+            </div>
+            <div class="status-row">
+                <div class="thresh-info">
+                    <span class="thr warn-thr">▲ 4.5</span>
+                    <span class="thr crit-thr">▲ 7.0</span>
+                </div>
+                <div class="status-pill" id="status_bearing_vibration_x">ОЖИДАНИЕ</div>
+            </div>
+            <div class="spark-wrap">
+                <div class="spark-el" id="spark_bearing_vibration_x"></div>
+            </div>
+        </div>
+
+        <div class="sensor-card" id="card_bearing_temperature">
+            <div class="card-label">ТЕМПЕРАТУРА ПОДШИПНИКА</div>
+            <div class="card-unit-badge">°C</div>
+            <div class="gauge-wrap">
+                <div class="gauge-el" id="gauge_bearing_temperature"></div>
+                <div class="gauge-center">
+                    <div class="gauge-val" id="val_bearing_temperature">—</div>
+                    <div class="gauge-unit">°C</div>
+                </div>
+            </div>
+            <div class="status-row">
+                <div class="thresh-info">
+                    <span class="thr warn-thr">▲ 75</span>
+                    <span class="thr crit-thr">▲ 85</span>
+                </div>
+                <div class="status-pill" id="status_bearing_temperature">ОЖИДАНИЕ</div>
+            </div>
+            <div class="spark-wrap">
+                <div class="spark-el" id="spark_bearing_temperature"></div>
+            </div>
+        </div>
+
+        <div class="sensor-card" id="card_motor_current">
+            <div class="card-label">ТОК ДВИГАТЕЛЯ</div>
+            <div class="card-unit-badge">A</div>
+            <div class="gauge-wrap">
+                <div class="gauge-el" id="gauge_motor_current"></div>
+                <div class="gauge-center">
+                    <div class="gauge-val" id="val_motor_current">—</div>
+                    <div class="gauge-unit">A</div>
+                </div>
+            </div>
+            <div class="status-row">
+                <div class="thresh-info">
+                    <span class="thr warn-thr">▲ 12</span>
+                    <span class="thr crit-thr">▲ 15</span>
+                </div>
+                <div class="status-pill" id="status_motor_current">ОЖИДАНИЕ</div>
+            </div>
+            <div class="spark-wrap">
+                <div class="spark-el" id="spark_motor_current"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trend charts -->
+    <section class="trends-row">
+        <div class="trend-card">
+            <div class="trend-header">
+                <span class="trend-title">ВИБРАЦИЯ X</span>
+                <span class="trend-unit">mm/s · последние 60 точек</span>
+            </div>
+            <div class="trend-el" id="trend_bearing_vibration_x"></div>
+        </div>
+        <div class="trend-card">
+            <div class="trend-header">
+                <span class="trend-title">ТЕМПЕРАТУРА</span>
+                <span class="trend-unit">°C · последние 60 точек</span>
+            </div>
+            <div class="trend-el" id="trend_bearing_temperature"></div>
+        </div>
+        <div class="trend-card">
+            <div class="trend-header">
+                <span class="trend-title">ТОК ДВИГАТЕЛЯ</span>
+                <span class="trend-unit">A · последние 60 точек</span>
+            </div>
+            <div class="trend-el" id="trend_motor_current"></div>
+        </div>
+    </section>
+
+    <!-- Alert log -->
+    <section class="log-section">
+        <div class="log-header">
+            <span>// ЖУРНАЛ СОБЫТИЙ</span>
+            <span id="logCount">0 событий</span>
+        </div>
+        <div class="log-body" id="logBody">
+            <div class="log-empty">Ожидание данных...</div>
+        </div>
+    </section>
+</main>
+
+<script src="script.js"></script>
+</body>
+</html>

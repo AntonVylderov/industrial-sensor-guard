@@ -1,0 +1,50 @@
+mode: "simulator"   # или "both", если есть Modbus-устройство по адресу 127.0.0.1:502
+
+rules:
+  # Вибрация подшипника X
+  - parameter: bearing_vibration_x
+    threshold_warning: 4.5       # предупреждение при превышении 4.5 мм/с
+    threshold_critical: 7.0      # критический уровень 7.0 мм/с
+    unit: "mm/s"
+    window_secs: 2.0             # скользящее среднее за 2 секунды (сглаживает скачки)
+    duration_secs: 5.0           # алерт только если значение превышает порог более 5 секунд
+    delta_per_minute: 2.0        # алерт при изменении более 2 мм/с за минуту
+    heartbeat_secs: 10.0         # алерт, если нет данных от этого датчика 10 секунд
+
+  # Температура подшипника
+  - parameter: bearing_temperature
+    threshold_warning: 75.0      # предупреждение при 75°C
+    threshold_critical: 85.0     # критический уровень 85°C
+    unit: "°C"
+    window_secs: 3.0             # среднее за 3 секунды
+    duration_secs: 8.0           # длительность превышения 8 секунд
+    delta_per_minute: 3.0        # изменение температуры более 3°C за минуту
+    heartbeat_secs: 15.0
+
+  # Ток двигателя
+  - parameter: motor_current
+    threshold_warning: 12.0      # предупреждение при 12 А
+    threshold_critical: 15.0     # критический уровень 15 А
+    unit: "A"
+    window_secs: 1.0             # среднее за 1 секунду (быстрая реакция)
+    duration_secs: 2.0           # алерт если ток высокий больше 2 секунд
+    delta_per_minute: 5.0        # резкое изменение тока
+    heartbeat_secs: 20.0
+
+# Если mode == "both" или "modbus", требуется секция modbus
+modbus:
+  addr: "127.0.0.1:502"          # адрес Modbus-сервера
+  interval_secs: 1               # опрос каждую секунду
+  registers:
+    - address: 0
+      parameter: bearing_vibration_x
+      unit: "mm/s"
+      register_type: holding     # holding register (по умолчанию)
+    - address: 1
+      parameter: bearing_temperature
+      unit: "°C"
+      register_type: input       # input register (только чтение)
+    - address: 2
+      parameter: motor_current
+      unit: "A"
+      register_type: holding

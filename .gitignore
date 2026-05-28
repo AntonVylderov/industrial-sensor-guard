@@ -1,1 +1,10 @@
 /target
+**/*.rs.bk
+*.swp
+*.swo
+.env
+logs/
+data/
+*.db
+.idea/
+.vscode/
